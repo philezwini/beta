@@ -47,7 +47,6 @@ public class Player extends Entity {
 		if (b.getKicker() != null) {
 			b.setPrevKicker(b.getKicker());
 		}
-
 		b.setKicker(this);
 		b.setFinalPos(c);
 		Physics2D.moveBall(b);

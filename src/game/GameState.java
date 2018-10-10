@@ -451,8 +451,10 @@ public class GameState extends TimerTask {
 	 * } } return false; }
 	 */
 	private boolean isKickAction(Action a) {
-		return (a == Action.KICK_N) || (a == Action.KICK_NE) || (a == Action.KICK_NW) || (a == Action.KICK_S)
+
+		boolean b = (a == Action.KICK_N) || (a == Action.KICK_NE) || (a == Action.KICK_NW) || (a == Action.KICK_S)
 				|| (a == Action.KICK_SE) || (a == Action.KICK_SW) || (a == Action.KICK_W) || (a == Action.KICK_E);
+		return b;
 	}
 
 	private void penalize(Player p, int penalty) {
@@ -511,8 +513,9 @@ public class GameState extends TimerTask {
 			break;
 		case MOVE_TO_POSS:
 			c = detMovementToPos(p);
-			System.out.println("Moving to position (" + p.getDirection() + ")");
-			p.move(c, players);
+			if (c != null)
+				p.move(c, players);
+			break;
 		case KICK_E:
 			c = new Coordinate(ball.getPos().getX() + kickDistance, ball.getPos().getY());
 
@@ -966,6 +969,10 @@ public class GameState extends TimerTask {
 
 		for (DTree model : models) {
 			if (model.getpTeam() == Team.YELLOW) {
+				/*
+				 * Position pos = detPosition(model.getpId()); model.setpPos(pos); Coordinate c
+				 * = detCoordinate(pos, Team.YELLOW); model.setPStartPos(c);
+				 */
 				Player p = new Player("img/players/yellow.png", Team.YELLOW, model.getpId(), model.getPStartPos(),
 						model.getpPos());
 				p.setDirection(randDir());
@@ -973,6 +980,11 @@ public class GameState extends TimerTask {
 				yTeam.add(p);
 				players.add(p);
 			} else {
+				/*
+				 * System.out.println("id = " + model.getpId()); Position pos = detPosition(19 -
+				 * model.getpId()); model.setpPos(pos); Coordinate c = detCoordinate(pos,
+				 * Team.BLACK); model.setPStartPos(c);
+				 */
 				Player p = new Player("img/players/black.png", Team.BLACK, model.getpId(), model.getPStartPos(),
 						model.getpPos());
 				p.setDirection(randDir());
