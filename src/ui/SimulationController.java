@@ -90,7 +90,7 @@ public class SimulationController extends Controller {
 
 	private void startSim() {
 		// Schedule the GameState thread to run in fixed 20millisecond intervals.
-		new Timer().scheduleAtFixedRate(gState, 0, 1);
+		new Timer().scheduleAtFixedRate(gState, 0, 20);
 	}
 
 	@FXML

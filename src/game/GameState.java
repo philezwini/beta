@@ -110,7 +110,7 @@ public class GameState extends TimerTask {
 			if (p.getTimeWindow() == 0) {
 				if (Physics2D.distance(p.getPos().getX(), p.getPos().getY(), p.getPrevPos().getX(),
 						p.getPrevPos().getY()) < 2) {
-					penalize(p, 1);
+					penalize(p, 50);
 				}
 				p.setTimeWindow(3);
 			} else {
@@ -192,13 +192,13 @@ public class GameState extends TimerTask {
 	private void makeDefaultKick(Player p) {
 		Direction direction = p.getDirection();
 		Coordinate c = null;
-		int d = 20;
+		int d = 70;
 		switch (direction) {
 		case N:
 			c = new Coordinate(p.getPos().getX(), p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -207,7 +207,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX(), p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -215,7 +215,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY());
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -224,7 +224,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY());
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -234,7 +234,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -244,7 +244,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -253,7 +253,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -262,7 +262,7 @@ public class GameState extends TimerTask {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 50);
+				reward(p, 500);
 			}
 
 			p.kickBall(ball, c);
@@ -342,12 +342,12 @@ public class GameState extends TimerTask {
 
 		// Penalize collisions.
 		if (Physics2D.isInCollision(p, players))
-			penalize(p, 5);
+			penalize(p, 50);
 
 		// Penalize the player if it moves outside of the field.
 
 		if (!p.isInField())
-			penalize(p, 5);
+			penalize(p, 50);
 
 		/*
 		 * If the ball is currently in the black team's half, reward the yellow team.

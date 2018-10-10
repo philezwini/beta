@@ -10,7 +10,7 @@ import model.Node;
 
 public class Selector {
 	private static final int TEAM_SIZE = 10; // Maximum (and minimum) population size.
-	private static final int MAX_NUM_GEN = 200;
+	private static final int MAX_NUM_GEN = 2000;
 
 	private static int currentGen; // The generation counter.
 	private static int overallBest; // The overall best fitness.
