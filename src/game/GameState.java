@@ -3,9 +3,6 @@ package game;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TimerTask;
-
-import ga.Selector;
 
 import Entity.Ball;
 import Entity.Direction;
@@ -15,6 +12,7 @@ import Entity.Team;
 import exception.GAException;
 import fileIO.FileInputHandler;
 import fileIO.FileOutputHandler;
+import ga.Selector;
 import model.Action;
 import model.DTree;
 import model.Node;
@@ -23,7 +21,7 @@ import physics.Coordinate;
 import physics.Physics2D;
 import ui.SimulationController;
 
-public class GameState extends TimerTask {
+public class GameState implements Runnable {
 	private ArrayList<Player> players;
 	private ArrayList<Player> yTeam, bTeam;
 	private Ball ball;
@@ -69,11 +67,13 @@ public class GameState extends TimerTask {
 				updateStats();
 				if (!Selector.monitor(yTeam, bTeam)) {
 					System.out.println("Done.");// We have reached our stopping condition. We have to stop evolution.
-					cancel();// Stop the thread and return.
+					// Instruct the ExecutorService to shutdown after this thread completes.
+					SimulationController.stopGame(1);
+					reset(true);
 					return;
 				}
 				generation = Selector.getCurrentGen();
-				reset();
+				reset(false);
 			} catch (GAException e) {
 				e.printStackTrace();
 			}
@@ -82,13 +82,13 @@ public class GameState extends TimerTask {
 		if (!Physics2D.moveBall(ball)) {
 			if (ball.isInLeftGoals()) {
 				updateScore(Team.BLACK);
-				reset();
+				reset(false);
 				return;
 			}
 
 			if (ball.isInRightGoals()) {
 				updateScore(Team.YELLOW);
-				reset();
+				reset(false);
 				return;
 			}
 
@@ -947,7 +947,7 @@ public class GameState extends TimerTask {
 		return true;
 	}
 
-	public void reset() {
+	public void reset(boolean fullReset) {
 		ball.setPos(new Coordinate(ball.getStartPos().getX(), ball.getStartPos().getY()));
 		ball.setFinalPos(ball.getPos());
 
@@ -959,6 +959,12 @@ public class GameState extends TimerTask {
 			p.setPos(p.getStartPos());
 			p.setDirection(randDir());
 			p.getModel().genDebugCode(p.getId() + "__");
+		}
+
+		if (fullReset) {
+			generation = 0;
+			yScore = 0;
+			bScore = 0;
 		}
 	}
 
