@@ -50,22 +50,6 @@ public class Selector {
 		while (bSubset.size() > 0)
 			bTeam.add(bSubset.remove(0));
 
-		System.out.print("Fittest (Yellow): {");
-		for (Player p1 : yf) {
-			System.out.print(p1.getScore() + ", ");
-		}
-
-		System.out.print("}");
-		System.out.println();
-
-		System.out.print("Fittest (Black): {");
-		for (Player p1 : bf) {
-			System.out.print(p1.getScore() + ", ");
-		}
-
-		System.out.print("}");
-		System.out.println();
-
 		try {
 			evolve(yTeam, bTeam, yf, bf);
 		} catch (Exception e) {
