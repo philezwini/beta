@@ -1,14 +1,14 @@
 package model;
 
 public enum State {
-	MOVING_N,
+	/*MOVING_N,
 	MOVING_S,
 	MOVING_E,
 	MOVING_W,
 	MOVING_NE,
 	MOVING_SE,
 	MOVING_NW,
-	MOVING_SW,
+	MOVING_SW,*/
 	
 	BALL_N,
 	BALL_S,

@@ -9,8 +9,8 @@ import Entity.Player;
 public class Physics2D {
 	public static final double FIELD_MIN_X = 64;
 	public static final double FIELD_MAX_X = 816;
-	public static final double FIELD_MIN_Y = 27;
-	public static final double FIELD_MAX_Y = 502;
+	public static final double FIELD_MIN_Y = 47;
+	public static final double FIELD_MAX_Y = 482;
 	public static final double FIELD_CENTER_X = 441;
 	public static final double FIELD_CENTER_Y = 263;
 	public static final double FIELD_WIDTH = FIELD_MAX_X - FIELD_MIN_X;
