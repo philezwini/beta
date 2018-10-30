@@ -35,17 +35,19 @@
    <center>
       <SplitPane dividerPositions="0.04564315352697095, 0.6763485477178424" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="625.0" prefWidth="900.0">
         <items>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="700.0" spacing="50.0">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="700.0" spacing="70.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Live Simulation">
                      <font>
                         <Font name="Dubai Light" size="24.0" />
                      </font>
                   </Text>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
                      <children>
                         <Label text="Generation:" />
                         <TextField fx:id="tGen" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                        <Label layoutX="10.0" layoutY="10.0" text="Max Generations:" />
+                        <TextField fx:id="tGen1" layoutX="82.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                      </children>
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
@@ -71,9 +73,9 @@
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" spacing="10.0">
                <children>
                   <Button fx:id="btnStart" defaultButton="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnStartClick" prefHeight="30.0" prefWidth="50.0" text="Start" />
-                  <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" text="Stop" />
+                  <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" text="Pause" />
                   <Button mnemonicParsing="false" onAction="#btnSaveClick" text="Save" />
-                  <ToggleButton fx:id="tGraphics" mnemonicParsing="false" onAction="#btnGraphicsClick" text="Graphics" />
+                  <ToggleButton fx:id="tTrain" mnemonicParsing="false" onAction="#btnGraphicsClick" text="Train Mode" />
                </children>
                <padding>
                   <Insets right="400.0" />
