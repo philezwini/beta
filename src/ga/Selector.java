@@ -9,22 +9,25 @@ import model.DTree;
 import model.Node;
 
 public class Selector {
-	private static final int TEAM_SIZE = 10; // Maximum (and minimum) population size.
-	private static final int MAX_NUM_GEN = 2000;
+	private static final int TEAM_SIZE = 10; // The allowed size for each team.
+	private static int maxNumGen;
 
 	private static int currentGen; // The generation counter.
 	private static int overallBest; // The overall best fitness.
 	private static double mutationRate = 0.5; // The probability that mutation will happen.
 
-	public static void initialize() {
+	public static void initialize(int maxNumGen) {
 		overallBest = (int) Double.NEGATIVE_INFINITY; // Make sure the overall best fitness is as low as possible.
 		currentGen = 0;// Initialize the generation counter to 0;
 		setCurrentGen(0);
+		Selector.maxNumGen = maxNumGen;
 	}
 
 	public static boolean monitor(ArrayList<Player> yTeam, ArrayList<Player> bTeam) throws GAException {
-		if (currentGen == MAX_NUM_GEN)
+		if (currentGen == maxNumGen) {
+			currentGen = 0; //Reset generation counter.
 			return false;
+		}
 
 		if (bTeam.size() != TEAM_SIZE || yTeam.size() != TEAM_SIZE)
 			throw new GAException("Invalid team sizes: (" + bTeam.size() + ", " + yTeam.size() + ")");
@@ -315,5 +318,13 @@ public class Selector {
 
 	private static void setCurrentGen(int currentGen) {
 		Selector.currentGen = currentGen;
+	}
+	
+	public static int getMaxNumGen() {
+		return maxNumGen;
+	}
+	
+	public static void setNumGen(int maxNumGen) {
+		Selector.maxNumGen = maxNumGen;
 	}
 }
