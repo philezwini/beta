@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SimulationController">
+   <top>
+      <MenuBar prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Options">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#closeMenuItemClick" text="Close" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.04564315352697095, 0.6763485477178424" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="625.0" prefWidth="900.0">
+        <items>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="700.0" spacing="70.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Live Simulation">
+                     <font>
+                        <Font name="Dubai Light" size="24.0" />
+                     </font>
+                  </Text>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+                     <children>
+                        <Label text="Generation:" />
+                        <TextField fx:id="tGen" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                        <Label layoutX="10.0" layoutY="10.0" text="Max Generations:" />
+                        <TextField fx:id="tGen1" layoutX="82.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Score:" />
+                        <Label layoutX="10.0" layoutY="10.0" text="Y:" />
+                        <TextField fx:id="tYScore" layoutX="42.0" layoutY="10.0" maxWidth="30.0" />
+                        <Label layoutX="132.0" layoutY="10.0" text="B:" />
+                        <TextField fx:id="tBScore" maxWidth="30.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <AnchorPane fx:id="aPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="900.0">
+               <children>
+                  <ImageView fx:id="fieldView" fitHeight="550.0" fitWidth="900.0" onMouseClicked="#btnClickClick" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../img/fields/soccer_field.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnStart" defaultButton="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnStartClick" prefHeight="30.0" prefWidth="50.0" text="Start" />
+                  <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" text="Pause" />
+                  <Button mnemonicParsing="false" onAction="#btnSaveClick" text="Save" />
+                  <ToggleButton fx:id="tTrain" mnemonicParsing="false" onAction="#btnGraphicsClick" text="Train Mode" />
+               </children>
+               <padding>
+                  <Insets right="400.0" />
+               </padding>
+            </HBox>
+        </items>
+      </SplitPane>
+   </center>
+   <left>
+      <LineChart fx:id="chart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" stylesheets="@application.css" title="Average Fitness over Time" BorderPane.alignment="CENTER">
+        <xAxis>
+          <CategoryAxis label="Generation" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Average Fitness" side="LEFT" />
+        </yAxis>
+      </LineChart>
+   </left>
+</BorderPane>
