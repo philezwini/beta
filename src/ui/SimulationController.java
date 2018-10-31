@@ -75,6 +75,7 @@ public class SimulationController extends Controller {
 		String credits = "Soccer field image obtained for free from: https://www.vecteezy.com/\n\n";
 		credits += "Yellow soccer jersey image obtained for free from: https://pngtree.com/free-icons/soccer jersey\n\n";
 		credits += "Black soccery jersey image obtained for free from: https://www.onlinewebfonts.com/icon/445726\n\n";
+		credits += "Logo designed for free at www.canva.com\n\n";
 		Stage s = (Stage)rootPane.getScene().getWindow();
 		makeCustomAlert(s, "Credits", credits);
 	}

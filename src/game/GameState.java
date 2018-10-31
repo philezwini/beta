@@ -93,7 +93,7 @@ public class GameState implements Runnable {
 			}
 
 			if (!ball.isInField()) {
-				// penalize(ball.getKicker(), 10);
+				penalize(ball.getKicker(), 1000);
 				ball.setPos(new Coordinate(Physics2D.FIELD_CENTER_X, Physics2D.FIELD_CENTER_Y));
 				ball.setFinalPos(ball.getPos());
 				return;
@@ -159,15 +159,15 @@ public class GameState implements Runnable {
 			for (Player p : players) {
 				if (!p.equals(scorer)) {
 					if (p.getTeam() == Team.BLACK)
-						reward(p, 50);
+						reward(p, 5000);
 					else
-						penalize(p, 50);
+						penalize(p, 5000);
 				}
 			}
 		} else {
 			yScore++;
 
-			if (scorer.getTeam() != Team.YELLOW)
+			if (scorer.getTeam() == Team.BLACK)
 				penalize(scorer, 10000);
 			else
 				reward(scorer, 10000);
@@ -175,9 +175,9 @@ public class GameState implements Runnable {
 			for (Player p : players) {
 				if (!p.equals(scorer)) {
 					if (p.getTeam() == Team.YELLOW)
-						reward(p, 50);
+						reward(p, 5000);
 					else
-						penalize(p, 50);
+						penalize(p, 5000);
 				}
 			}
 		}
@@ -312,24 +312,9 @@ public class GameState implements Runnable {
 		if ((d > 50) && (d <= 100))
 			reward(p, 1);
 
-		/*
-		 * if (isInDefaultPos(p)) { reward(p, 1000); } else { penalize(p, 10); }
-		 */
-
-		/*
-		 * if (isKickAction(a)) { if (!isInPoss(p)) { // Penalize the player. It is
-		 * trying to kick the ball but it is not in // possession of it.. penalize(p,
-		 * 2); } else { penalizeOpponents(p, 2);// Penalize the opposing team because
-		 * they lost ball possession. reward(p, 50);// The player is performing a valid
-		 * kick, give a reward. updatePState(p, a);// Only execute the kick if the
-		 * player is in possession of the ball. } } else {
-		 * 
-		 * }
-		 */
-
 		// The player is running with the ball.
 		if (isInPoss(p)) {
-			// penalizeOpponents(p, 2);
+			penalizeOpponents(p, 2);
 			reward(p, 1000);
 			makeDefaultKick(p);
 		}
@@ -341,7 +326,6 @@ public class GameState implements Runnable {
 		}
 
 		// Penalize the player if it moves outside of the field.
-
 		if (!p.isInField()) {
 			penalize(p, 50);
 		}
@@ -364,94 +348,12 @@ public class GameState implements Runnable {
 
 	}
 
-	/*
-	 * private void penalizeOpponents(Player p, int penalty) { for (Player p1 :
-	 * players) { if (p.getTeam() != p1.getTeam()) penalize(p1, penalty); } }
-	 */
-
-	/*
-	 * private boolean isInDefaultPos(Player p) { double radius = 100; if
-	 * (p.getTeam() == Team.YELLOW) { if (p.getDefPos() == Position.LB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 188, 90) < radius; }
-	 * 
-	 * if (p.getDefPos() == Position.RB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 188, 451) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LCB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 143, 200) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RCB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 143, 350) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LW) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 350, 90) < radius; }
-	 * 
-	 * if (p.getDefPos() == Position.RW) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 350, 451) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LCM) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 280, 200) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RCM) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 280, 350) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LS) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 400, 250) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RS) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 400, 300) < radius;
-	 * } } else { if (p.getDefPos() == Position.LB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 700, 451) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 700, 90) < radius; }
-	 * 
-	 * if (p.getDefPos() == Position.LCB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 750, 350) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RCB) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 750, 200) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LW) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 500, 451) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RW) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 500, 90) < radius; }
-	 * 
-	 * if (p.getDefPos() == Position.LCM) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 590, 350) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RCM) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 590, 200) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.LS) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 473, 300) < radius;
-	 * }
-	 * 
-	 * if (p.getDefPos() == Position.RS) { return
-	 * Physics2D.distance(p.getPos().getX(), p.getPos().getY(), 473, 250) < radius;
-	 * } } return false; }
-	 */
-	/*
-	 * private boolean isKickAction(Action a) {
-	 * 
-	 * boolean b = (a == Action.KICK_N) || (a == Action.KICK_NE) || (a ==
-	 * Action.KICK_NW) || (a == Action.KICK_S) || (a == Action.KICK_SE) || (a ==
-	 * Action.KICK_SW) || (a == Action.KICK_W) || (a == Action.KICK_E); return b; }
-	 */
+	private void penalizeOpponents(Player p, int penalty) {
+		for (Player p1 : players) {
+			if (p.getTeam() != p1.getTeam())
+				penalize(p1, penalty);
+		}
+	}
 
 	private void penalize(Player p, int penalty) {
 		p.setScore(p.getScore() - penalty);
@@ -464,7 +366,6 @@ public class GameState implements Runnable {
 	private void updatePState(Player p, Action a) {
 		Coordinate c = null;
 		double moveDistance = 2;
-		// double kickDistance = 50;
 		switch (a) {
 		case MOVE_E:
 			c = new Coordinate(p.getPos().getX() + moveDistance, p.getPos().getY());
@@ -507,173 +408,13 @@ public class GameState implements Runnable {
 			p.setDirection(Direction.NW);
 			p.move(c, players);
 			break;
-		/*
-		 * case MOVE_TO_POSS: c = detMovementToPos(p); if (c != null) p.move(c,
-		 * players); break; case KICK_E: c = new Coordinate(ball.getPos().getX() +
-		 * kickDistance, ball.getPos().getY());
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_N: c = new
-		 * Coordinate(ball.getPos().getX(), ball.getPos().getY() - kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_NE: c = new
-		 * Coordinate(ball.getPos().getX() + kickDistance, ball.getPos().getY() -
-		 * kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_NW: c = new
-		 * Coordinate(ball.getPos().getX() - kickDistance, ball.getPos().getY() -
-		 * kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_S: c = new
-		 * Coordinate(ball.getPos().getX(), ball.getPos().getY() + kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_SE: c = new
-		 * Coordinate(ball.getPos().getX() + kickDistance, ball.getPos().getY() +
-		 * kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_SW: c = new
-		 * Coordinate(ball.getPos().getX() - kickDistance, ball.getPos().getY() +
-		 * kickDistance);
-		 * 
-		 * if (evaluateKick(p, c) > 0) {
-		 * 
-		 * reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break; case KICK_W: c = new
-		 * Coordinate(ball.getPos().getX() - kickDistance, ball.getPos().getY());
-		 * 
-		 * if (evaluateKick(p, c) > 0) { reward(p, 50); }
-		 * 
-		 * p.kickBall(ball, c); break;
-		 */
 		}
 	}
-
-	/*
-	 * private Coordinate detMovementToPos(Player p) { Coordinate c = locatePos(p);
-	 * return c; }
-	 */
-
-	/*
-	 * private Coordinate getMovCoord(double destX, double destY, Player p) { if
-	 * (p.getPos().getY() > destY) { p.setDirection(Direction.N); return new
-	 * Coordinate(p.getPos().getX(), p.getPos().getY() - 1); }
-	 * 
-	 * if (p.getPos().getY() < destY) { p.setDirection(Direction.S); return new
-	 * Coordinate(p.getPos().getX(), p.getPos().getY() + 1); }
-	 * 
-	 * if (p.getPos().getX() > destX) { p.setDirection(Direction.W); return new
-	 * Coordinate(p.getPos().getX() - 1, p.getPos().getY()); }
-	 * 
-	 * if (p.getPos().getX() < destX) { p.setDirection(Direction.E); return new
-	 * Coordinate(p.getPos().getX() + 1, p.getPos().getY()); } return null; }
-	 */
-	/*
-	 * private Coordinate locatePos(Player p) { if (p.getTeam() == Team.YELLOW) { if
-	 * (p.getDefPos() == Position.LB) { return getMovCoord(188, 90, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RB) { return getMovCoord(188, 451, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LCB) { return getMovCoord(143, 200, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RCB) { return getMovCoord(143, 350, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LW) { return getMovCoord(350, 90, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RW) { return getMovCoord(350, 451, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LCM) { return getMovCoord(280, 200, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RCM) { return getMovCoord(280, 350, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LS) { return getMovCoord(400, 250, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RS) { return getMovCoord(400, 300, p); } } else
-	 * { if (p.getDefPos() == Position.LB) { return getMovCoord(700, 451, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RB) { return getMovCoord(700, 90, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LCB) { return getMovCoord(750, 350, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RCB) { return getMovCoord(750, 200, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LW) { return getMovCoord(500, 451, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RW) { return getMovCoord(500, 90, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LCM) { return getMovCoord(590, 350, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RCM) { return getMovCoord(590, 200, p); }
-	 * 
-	 * if (p.getDefPos() == Position.LS) { return getMovCoord(473, 300, p); }
-	 * 
-	 * if (p.getDefPos() == Position.RS) { return getMovCoord(473, 250, p); } }
-	 * return null; }
-	 */
-	/*
-	 * private Coordinate detMovementToBall(Player p) { // If the ball is north from
-	 * the player. if (Math.round(ball.getPos().getY()) < p.getPos().getY() &&
-	 * Math.round(ball.getPos().getX()) == p.getPos().getX()) { return new
-	 * Coordinate(p.getPos().getX(), p.getPos().getY() - 1); }
-	 * 
-	 * // If the ball is north west from the player. if
-	 * (Math.round(ball.getPos().getY()) < p.getPos().getY() &&
-	 * Math.round(ball.getPos().getX()) < p.getPos().getX()) { return new
-	 * Coordinate(p.getPos().getX() - 1, p.getPos().getY() - 1); }
-	 * 
-	 * // If the ball is north east from the player. if
-	 * (Math.round(ball.getPos().getY()) < p.getPos().getY() &&
-	 * Math.round(ball.getPos().getX()) > p.getPos().getX()) { return new
-	 * Coordinate(p.getPos().getX() + 1, p.getPos().getY() - 1); }
-	 * 
-	 * // If the ball is south from the player if (Math.round(ball.getPos().getY())
-	 * > p.getPos().getY() && Math.round(ball.getPos().getX()) == p.getPos().getX())
-	 * { return new Coordinate(p.getPos().getX(), p.getPos().getY() + 1); }
-	 * 
-	 * // If the ball is south west from the player. if
-	 * (Math.round(ball.getPos().getY()) > p.getPos().getY() &&
-	 * Math.round(ball.getPos().getX()) < p.getPos().getX()) { return new
-	 * Coordinate(p.getPos().getX() - 1, p.getPos().getY() + 1); }
-	 * 
-	 * // If the ball is south east from the player. if
-	 * (Math.round(ball.getPos().getY()) > p.getPos().getY() &&
-	 * Math.round(ball.getPos().getX()) > p.getPos().getX()) { return new
-	 * Coordinate(p.getPos().getX() + 1, p.getPos().getY() + 1); }
-	 * 
-	 * // If the ball is west from the player if (Math.round(ball.getPos().getX()) <
-	 * p.getPos().getX() && Math.round(ball.getPos().getY()) == p.getPos().getY()) {
-	 * return new Coordinate(p.getPos().getX() - 1, p.getPos().getY()); }
-	 * 
-	 * // If the ball is east from the player if (Math.round(ball.getPos().getX()) >
-	 * p.getPos().getX() && Math.round(ball.getPos().getY()) == p.getPos().getY()) {
-	 * return new Coordinate(p.getPos().getX() + 1, p.getPos().getY()); }
-	 * 
-	 * return null; }
-	 */
 
 	private boolean currentPState(State state, Player p) throws Exception {
 		switch (state) {
 		case IN_POSS:
 			return isInPoss(p);
-		/*
-		 * case MOVING_N: return p.getDirection() == Direction.N; case MOVING_NE: return
-		 * p.getDirection() == Direction.NE; case MOVING_NW: return p.getDirection() ==
-		 * Direction.NW; case MOVING_S: return p.getDirection() == Direction.S; case
-		 * MOVING_SE: return p.getDirection() == Direction.SE; case MOVING_SW: return
-		 * p.getDirection() == Direction.SW; case MOVING_W: return p.getDirection() ==
-		 * Direction.W; case MOVING_E: return p.getDirection() == Direction.E;
-		 */
 		case BALL_N:
 			return isBallNorth(p);
 		case BALL_S:
@@ -866,7 +607,7 @@ public class GameState implements Runnable {
 		for (Player p : players) {
 			p.setPos(p.getStartPos());
 			p.setDirection(randDir());
-			// p.getModel().genDebugCode(p.getId() + "_");
+			//p.getModel().genDebugCode(p.getId() + "_");
 		}
 
 		if (fullReset) {
@@ -878,7 +619,8 @@ public class GameState implements Runnable {
 
 	/*
 	 * CREDIT: Yellow Soccer Jersey picture was obtained for free from:
-	 * https://pngtree.com/free-icons/soccer jersey. CREDIT: Black Soccery Jersey
+	 * https://pngtree.com/free-icons/soccer jersey.
+	 * CREDIT: Black Soccery Jersey
 	 * picture was obtained for free from:
 	 * https://www.onlinewebfonts.com/icon/445726
 	 */
@@ -897,11 +639,6 @@ public class GameState implements Runnable {
 				yTeam.add(p);
 				players.add(p);
 			} else {
-				/*
-				 * System.out.println("id = " + model.getpId()); Position pos = detPosition(19 -
-				 * model.getpId()); model.setpPos(pos); Coordinate c = detCoordinate(pos,
-				 * Team.BLACK); model.setPStartPos(c);
-				 */
 				Player p = new Player("img/players/black.png", Team.BLACK, model.getpId(), model.getPStartPos(),
 						model.getpPos());
 				p.setDirection(randDir());
@@ -927,7 +664,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			model.genDebugCode(model.getpPos() + "-" + model.getpTeam());
+			//model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			yTeam.add(p);
@@ -946,7 +683,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			model.genDebugCode(model.getpPos() + "-" + model.getpTeam());
+			//model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			bTeam.add(p);

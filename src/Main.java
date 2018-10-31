@@ -18,7 +18,7 @@ public class Main extends Application {
 
 	private void loadFXML() {
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("ui/Simulation.fxml"));
+			Parent parent = FXMLLoader.load(getClass().getResource("ui/Home.fxml"));
 			window.setScene(new Scene(parent));
 			window.setTitle("StratFinder");
 			window.setOnCloseRequest(e -> {
