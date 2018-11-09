@@ -89,7 +89,7 @@ public class DTree implements Serializable {
 	}
 
 	public static Action randMove() {
-		int roll = new Random().nextInt(17);
+		int roll = new Random().nextInt(8);
 		switch (roll) {
 		case 0:
 			return Action.MOVE_S;
@@ -107,7 +107,7 @@ public class DTree implements Serializable {
 			return Action.MOVE_NW;
 		case 7:
 			return Action.MOVE_N;
-		case 8:
+		/*case 8:
 			return Action.KICK_S;
 		case 9:
 			return Action.KICK_SE;
@@ -124,13 +124,13 @@ public class DTree implements Serializable {
 		case 15:
 			return Action.KICK_N;
 		case 16:
-			return Action.MOVE_TO_POSS;
+			return Action.MOVE_TO_POSS;*/
 		}
 		return null;
 	}
 
 	public static State randState() {
-		int roll = new Random().nextInt(27);
+		int roll = new Random().nextInt(19);
 		switch (roll) {
 		case 0:
 			return State.BALL_N;
@@ -145,46 +145,30 @@ public class DTree implements Serializable {
 		case 5:
 			return State.OWN_GOALS_CLOSE;
 		case 6:
-			return State.MOVING_NE;
-		case 7:
-			return State.MOVING_E;
-		case 8:
-			return State.MOVING_N;
-		case 9:
-			return State.MOVING_NW;
-		case 10:
-			return State.MOVING_S;
-		case 11:
-			return State.MOVING_SE;
-		case 12:
-			return State.MOVING_SW;
-		case 13:
-			return State.MOVING_W;
-		case 14:
-			return State.TEAM_MATE_N;
-		case 15:
-			return State.TEAM_MATE_S;
-		case 16:
-			return State.TEAM_MATE_W;
-		case 17:
-			return State.TEAM_MATE_E;
-		case 18:
-			return State.OPPONENT_N;
-		case 19:
-			return State.OPPONENT_S;
-		case 20:
-			return State.OPPONENT_W;
-		case 21:
-			return State.OPPONENT_E;
-		case 22:
 			return State.TOUCHLINE_N;
-		case 23:
+		case 7:
 			return State.TOUCHLINE_S;
-		case 24:
+		case 8:
 			return State.TOUCHLINE_W;
-		case 25:
+		case 9:
 			return State.TOUCHLINE_E;
-		case 26:
+		case 10:
+			return State.TEAM_MATE_N;
+		case 11:
+			return State.TEAM_MATE_S;
+		case 12:
+			return State.TEAM_MATE_W;
+		case 13:
+			return State.TEAM_MATE_E;
+		case 14:
+			return State.OPPONENT_N;
+		case 15:
+			return State.OPPONENT_S;
+		case 16:
+			return State.OPPONENT_W;
+		case 17:
+			return State.OPPONENT_E;
+		case 18:
 			return State.IN_POSS;
 		}
 		return null;

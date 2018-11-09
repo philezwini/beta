@@ -27,6 +27,7 @@
           <Menu mnemonicParsing="false" text="Options">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#closeMenuItemClick" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#creditsMenuItemClick" text="Credits" />
             </items>
           </Menu>
         </menus>
@@ -47,7 +48,7 @@
                         <Label text="Generation:" />
                         <TextField fx:id="tGen" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                         <Label layoutX="10.0" layoutY="10.0" text="Max Generations:" />
-                        <TextField fx:id="tGen1" layoutX="82.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                        <TextField fx:id="tMaxNumGen" layoutX="82.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                      </children>
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="10.0">

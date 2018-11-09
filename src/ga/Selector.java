@@ -14,7 +14,7 @@ public class Selector {
 
 	private static int currentGen; // The generation counter.
 	private static int overallBest; // The overall best fitness.
-	private static double mutationRate = 0.5; // The probability that mutation will happen.
+	private static double mutationRate = 0.8; // The probability that mutation will happen.
 
 	public static void initialize(int maxNumGen) {
 		overallBest = (int) Double.NEGATIVE_INFINITY; // Make sure the overall best fitness is as low as possible.
@@ -135,8 +135,6 @@ public class Selector {
 		}
 
 		double avgFitness = totalFitness / parents.size();
-		System.out.println("Average fitness = " + avgFitness);
-
 		if (newOverallBest) {
 			mutationRate += 0.1; // Increase the mutation rate because we are still exploring the search space.
 		} else {

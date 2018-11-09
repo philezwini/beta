@@ -18,9 +18,9 @@ public class Main extends Application {
 
 	private void loadFXML() {
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("ui/Simulation.fxml"));
+			Parent parent = FXMLLoader.load(getClass().getResource("ui/Home.fxml"));
 			window.setScene(new Scene(parent));
-			window.setTitle("StratFinder");
+			window.setTitle("RT-AD");
 			window.setOnCloseRequest(e -> {
 				e.consume(); // Consume the event so we can handle it manually.
 				Controller.closeWindow(window, true);

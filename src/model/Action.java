@@ -10,7 +10,7 @@ public enum Action {
 	MOVE_NW,
 	MOVE_SW,
 	
-	KICK_N,
+	/*KICK_N,
 	KICK_S,
 	KICK_E,
 	KICK_W,
@@ -19,5 +19,5 @@ public enum Action {
 	KICK_NW,
 	KICK_SW,
 	
-	MOVE_TO_POSS
+	MOVE_TO_POSS*/
 }
