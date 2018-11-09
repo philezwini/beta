@@ -44,7 +44,6 @@ public class GameState implements Runnable {
 
 	public void initialize() {
 		initBall();
-
 		File history = new File("data/progress/players.dat");
 		if (!history.exists()) {
 			System.out.println("No history found. Creating new players.");
@@ -108,15 +107,22 @@ public class GameState implements Runnable {
 		}
 
 		for (Player p : players) {
-			/*
-			 * if (p.getTimeWindow() == 0) { if (Physics2D.distance(p.getPos().getX(),
-			 * p.getPos().getY(), p.getPrevPos().getX(), p.getPrevPos().getY()) < 2) {
-			 * penalize(p, 50); } p.setTimeWindow(3); } else { if
-			 * (Physics2D.distance(p.getPos().getX(), p.getPos().getY(),
-			 * p.getPrevPos().getX(), p.getPrevPos().getY()) < 2) {
-			 * p.setTimeWindow(p.getTimeWindow() - 1); } else { p.setPrevPos(p.getPos());
-			 * p.setTimeWindow(3); } }
-			 */
+
+			if (p.getTimeWindow() == 0) {
+				if (Physics2D.distance(p.getPos().getX(), p.getPos().getY(), p.getPrevPos().getX(),
+						p.getPrevPos().getY()) < 20) {
+					penalize(p, 50);
+				}
+				p.setTimeWindow(3);
+			} else {
+				if (Physics2D.distance(p.getPos().getX(), p.getPos().getY(), p.getPrevPos().getX(),
+						p.getPrevPos().getY()) < 20) {
+					p.setTimeWindow(p.getTimeWindow() - 1);
+				} else {
+					p.setPrevPos(p.getPos());
+					p.setTimeWindow(3);
+				}
+			}
 
 			try {
 				Action a = process(p);
@@ -187,13 +193,14 @@ public class GameState implements Runnable {
 	private void makeDefaultKick(Player p) {
 		Direction direction = p.getDirection();
 		Coordinate c = null;
-		int d = 70;
+		int d = 40;
+		int kickReward = 5000;
 		switch (direction) {
 		case N:
 			c = new Coordinate(p.getPos().getX(), p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -202,7 +209,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX(), p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -210,7 +217,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY());
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -219,7 +226,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY());
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -229,7 +236,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -239,7 +246,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY() - d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -248,7 +255,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() + d, p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -257,7 +264,7 @@ public class GameState implements Runnable {
 			c = new Coordinate(p.getPos().getX() - d, p.getPos().getY() + d);
 
 			if (evaluateKick(p, c) > 0) {
-				reward(p, 500);
+				reward(p, kickReward);
 			}
 
 			p.kickBall(ball, c);
@@ -314,21 +321,21 @@ public class GameState implements Runnable {
 
 		// The player is running with the ball.
 		if (isInPoss(p)) {
-			penalizeOpponents(p, 2);
+			//penalizeOpponents(p, 2);
 			reward(p, 1000);
 			makeDefaultKick(p);
 		}
 		updatePState(p, a);// The player is simply moving.
 
 		// Penalize collisions.
-		if (Physics2D.isInCollision(p, players)) {
+		/*if (Physics2D.isInCollision(p, players)) {
 			penalize(p, 10);
-		}
+		}*/
 
 		// Penalize the player if it moves outside of the field.
-		if (!p.isInField()) {
+		/*if (!p.isInField()) {
 			penalize(p, 50);
-		}
+		}*/
 
 		/*
 		 * If the ball is currently in the black team's half, reward the yellow team.
@@ -607,7 +614,7 @@ public class GameState implements Runnable {
 		for (Player p : players) {
 			p.setPos(p.getStartPos());
 			p.setDirection(randDir());
-			p.getModel().genDebugCode(p.getId() + "_");
+			//p.getModel().genDebugCode(p.getId() + "_");
 		}
 
 		if (fullReset) {
@@ -619,8 +626,7 @@ public class GameState implements Runnable {
 
 	/*
 	 * CREDIT: Yellow Soccer Jersey picture was obtained for free from:
-	 * https://pngtree.com/free-icons/soccer jersey.
-	 * CREDIT: Black Soccery Jersey
+	 * https://pngtree.com/free-icons/soccer jersey. CREDIT: Black Soccery Jersey
 	 * picture was obtained for free from:
 	 * https://www.onlinewebfonts.com/icon/445726
 	 */
@@ -664,7 +670,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			model.genDebugCode(model.getpId() + "");
+			//model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			yTeam.add(p);
@@ -683,7 +689,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			model.genDebugCode(model.getpId() + "");
+			//model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			bTeam.add(p);

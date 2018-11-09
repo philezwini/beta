@@ -25,7 +25,7 @@ public abstract class Controller implements Initializable {
 	private static void makeCloseAlert(Stage stage) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Close Application");
-		alert.setHeaderText("You are about to exit RT-AD.");
+		alert.setHeaderText("You are about to exit StratFinder.");
 		alert.setContentText("Are you sure you want to exit?");
 		findCenter(alert, stage);
 		Optional<ButtonType> result = alert.showAndWait(); // Wait for the user's input before returning control to the

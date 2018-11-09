@@ -20,7 +20,7 @@ public class Main extends Application {
 		try {
 			Parent parent = FXMLLoader.load(getClass().getResource("ui/Home.fxml"));
 			window.setScene(new Scene(parent));
-			window.setTitle("RT-AD");
+			window.setTitle("StratFinder");
 			window.setOnCloseRequest(e -> {
 				e.consume(); // Consume the event so we can handle it manually.
 				Controller.closeWindow(window, true);

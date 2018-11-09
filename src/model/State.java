@@ -35,5 +35,6 @@ public enum State {
 	OWN_GOALS_CLOSE,
 
 	IN_POSS,
+	TM_IN_POSS
 	//IN_COLL,
 }

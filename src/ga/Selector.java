@@ -10,11 +10,13 @@ import model.Node;
 
 public class Selector {
 	private static final int TEAM_SIZE = 10; // The allowed size for each team.
+	private static final double MUT_STEP_SIZE = 0.01; // Mutation step size.
+
 	private static int maxNumGen;
 
 	private static int currentGen; // The generation counter.
 	private static int overallBest; // The overall best fitness.
-	private static double mutationRate = 0.8; // The probability that mutation will happen.
+	private static double mutationRate = 0.5; // The probability that mutation will happen.
 
 	public static void initialize(int maxNumGen) {
 		overallBest = (int) Double.NEGATIVE_INFINITY; // Make sure the overall best fitness is as low as possible.
@@ -25,7 +27,7 @@ public class Selector {
 
 	public static boolean monitor(ArrayList<Player> yTeam, ArrayList<Player> bTeam) throws GAException {
 		if (currentGen == maxNumGen) {
-			currentGen = 0; //Reset generation counter.
+			currentGen = 0; // Reset generation counter.
 			return false;
 		}
 
@@ -85,6 +87,7 @@ public class Selector {
 
 		for (Player p : yTeam) {
 			p.reset();
+
 			DTree m = newYTeam.remove(0);
 			m.setpId(p.getId());
 			m.setPStartPos(p.getStartPos());
@@ -118,37 +121,52 @@ public class Selector {
 
 	private static ArrayList<DTree> reproduce(ArrayList<Player> parents) {
 		ArrayList<DTree> offSpring = new ArrayList<>();
-		boolean newOverallBest = false; // If we have a new overall best we need to increase the mutation rate.
+		//boolean newOverallBest = false; // If we have a new overall best we need to increase the mutation rate.
 
 		// --The following calculation ensures that the resulting offspring, when added
 		// to the number of parents, will always sum up to TEAM_SIZE. --//
 		int numOffspring = TEAM_SIZE - parents.size();
 		int l = parents.size();
 
-		double totalFitness = 0;
-		for (Player p : parents) {
+		/*for (Player p : parents) {
 			if (p.getScore() > overallBest) {
+				System.out.println("new overall best found.");
 				newOverallBest = true;
 				overallBest = p.getScore(); // Update the overall best fitness.
 			}
-			totalFitness += p.getScore();
 		}
 
-		double avgFitness = totalFitness / parents.size();
 		if (newOverallBest) {
-			mutationRate += 0.1; // Increase the mutation rate because we are still exploring the search space.
+			if (mutationRate < 1) {
+				mutationRate += MUT_STEP_SIZE; // Increase the mutation rate because we are still exploring the search
+												// space.
+				System.out.println("New increased mutation rate: " + mutationRate);
+			}
+
+			if (mutationRate > 1) {
+				mutationRate = 1;
+			}
+
 		} else {
-			mutationRate -= 0.1;// Decrease the mutation rate because we are converging.
-		}
+			if (mutationRate > 0) {
+				mutationRate -= MUT_STEP_SIZE;// Decrease the mutation rate because we are converging.
+				System.out.println("New decreased mutation rate: " + mutationRate);
+
+			}
+
+			if (mutationRate < 0) {
+				mutationRate = 0;
+			}
+		}*/
 
 		for (int i = 0; i < numOffspring; i++) {
 			Player parent1 = parents.get(i % l);
 			Player parent2 = parents.get((i + 1) % l);
 			DTree o = crossover(parent1.getModel(), parent2.getModel());
 
-			double mutChance = new Random().nextDouble();
-			if (mutChance >= (1 - mutationRate))
-				mutate(o);
+			// double mutChance = new Random().nextDouble();
+			// if (mutChance < mutationRate)
+			mutate(o);
 
 			offSpring.add(o);
 		}
@@ -197,24 +215,32 @@ public class Selector {
 	private static void walk(Node cursor) {
 		Random r = new Random();
 		int roll = r.nextInt(2);
+
 		if (cursor.isLeaf()) {
 			if (roll == 1) {
-				roll = r.nextInt(2);
-				if (roll == 0)
-					cursor.setAction(DTree.randMove()); // Simply mutate the value inside of the node.
-				else if (roll == 1)
-					mutReplaceWithSubTree(cursor);// We replace this entire subtree with a
-				// randomly generated subtree.
+				// We will mutate the node.
+				cursor.setAction(DTree.randMove()); // Simply mutate the value inside of the node.
+
+				/*
+				 * roll = r.nextInt(2); if (roll == 0) cursor.setAction(DTree.randMove()); //
+				 * Simply mutate the value inside of the node. else if (roll == 1)
+				 * mutReplaceWithSubTree(cursor);// We replace this entire subtree with a //
+				 * randomly generated subtree.
+				 */
 			}
 			return;
 		}
 
 		if (roll == 1) {
-			roll = r.nextInt(2);
-			if (roll == 0)
-				cursor.setState(DTree.randState());// Simply mutate the value inside of the node.
-			else if (roll == 1)
-				mutReplaceWithSubTree(cursor);// We replace this entire subtree with a randomly generated subtree.
+			// We will mmutate the node.
+			cursor.setState(DTree.randState());// Simply mutate the value inside of the node.
+
+			/*
+			 * roll = r.nextInt(2); if (roll == 0) cursor.setState(DTree.randState());//
+			 * Simply mutate the value inside of the node. else if (roll == 1)
+			 * mutReplaceWithSubTree(cursor);// We replace this entire subtree with a
+			 * randomly generated subtree.
+			 */
 		}
 
 		// First check to ensure that cursor still has children.
@@ -227,27 +253,21 @@ public class Selector {
 		}
 	}
 
-/*	private static void mutReplaceWithNode(Node cursor) {
-		if (cursor.equals(cursor.getParent().getYes())) {
-			Node termNode = new Node(cursor.getParent(), null, null, null, DTree.randMove());
-			termNode.getParent().setYes(termNode);
-
-			cursor.setParent(null);
-			cursor.setYes(null);
-			cursor.setNo(null);
-			cursor = null;
-		}
-
-		else {
-			Node termNode = new Node(cursor.getParent(), null, null, null, DTree.randMove());
-			termNode.getParent().setNo(termNode);
-
-			cursor.setParent(null);
-			cursor.setYes(null);
-			cursor.setNo(null);
-			cursor = null;
-		}
-	}*/
+	/*
+	 * private static void mutReplaceWithNode(Node cursor) { if
+	 * (cursor.equals(cursor.getParent().getYes())) { Node termNode = new
+	 * Node(cursor.getParent(), null, null, null, DTree.randMove());
+	 * termNode.getParent().setYes(termNode);
+	 * 
+	 * cursor.setParent(null); cursor.setYes(null); cursor.setNo(null); cursor =
+	 * null; }
+	 * 
+	 * else { Node termNode = new Node(cursor.getParent(), null, null, null,
+	 * DTree.randMove()); termNode.getParent().setNo(termNode);
+	 * 
+	 * cursor.setParent(null); cursor.setYes(null); cursor.setNo(null); cursor =
+	 * null; } }
+	 */
 
 	private static void mutReplaceWithSubTree(Node cursor) {
 		Node sTree = randSubTree(cursor.getParent());
@@ -301,11 +321,11 @@ public class Selector {
 	private static void setCurrentGen(int currentGen) {
 		Selector.currentGen = currentGen;
 	}
-	
+
 	public static int getMaxNumGen() {
 		return maxNumGen;
 	}
-	
+
 	public static void setNumGen(int maxNumGen) {
 		Selector.maxNumGen = maxNumGen;
 	}

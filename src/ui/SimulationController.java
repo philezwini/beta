@@ -135,7 +135,7 @@ public class SimulationController extends Controller {
 			es.scheduleAtFixedRate(gState, 0, 500, TimeUnit.MICROSECONDS);
 		} else {
 			// The intervals should be longer so that the simulation can be watched..
-			es.scheduleAtFixedRate(gState, 0, 20, TimeUnit.MILLISECONDS);
+			es.scheduleAtFixedRate(gState, 0, 50, TimeUnit.MILLISECONDS);
 		}
 	}
 
