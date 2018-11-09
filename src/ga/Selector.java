@@ -136,9 +136,9 @@ public class Selector {
 
 		double avgFitness = totalFitness / parents.size();
 		if (newOverallBest) {
-			mutationRate += 0.01; // Increase the mutation rate because we are still exploring the search space.
+			mutationRate += 0.1; // Increase the mutation rate because we are still exploring the search space.
 		} else {
-			mutationRate -= 0.01;// Decrease the mutation rate because we are converging.
+			mutationRate -= 0.1;// Decrease the mutation rate because we are converging.
 		}
 
 		for (int i = 0; i < numOffspring; i++) {

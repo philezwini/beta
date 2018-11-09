@@ -607,7 +607,7 @@ public class GameState implements Runnable {
 		for (Player p : players) {
 			p.setPos(p.getStartPos());
 			p.setDirection(randDir());
-			//p.getModel().genDebugCode(p.getId() + "_");
+			p.getModel().genDebugCode(p.getId() + "_");
 		}
 
 		if (fullReset) {
@@ -664,7 +664,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			//model.genDebugCode(model.getpId() + "");
+			model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			yTeam.add(p);
@@ -683,7 +683,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			//model.genDebugCode(model.getpId() + "");
+			model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			bTeam.add(p);
