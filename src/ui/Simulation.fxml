@@ -17,8 +17,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SimulationController">
    <top>
@@ -34,29 +32,26 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.04564315352697095, 0.6763485477178424" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="625.0" prefWidth="900.0">
+      <SplitPane dividerPositions="0.0456, 0.6763" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="625.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <items>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="700.0" spacing="70.0">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="773.0" spacing="70.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Live Simulation">
-                     <font>
-                        <Font name="Dubai Light" size="24.0" />
-                     </font>
-                  </Text>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0" spacing="10.0">
                      <children>
                         <Label text="Generation:" />
                         <TextField fx:id="tGen" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                         <Label layoutX="10.0" layoutY="10.0" text="Max Generations:" />
                         <TextField fx:id="tMaxNumGen" layoutX="82.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+                        <Label layoutX="142.0" layoutY="10.0" text="Total Generations:" />
+                        <TextField fx:id="tTotalGen" layoutX="245.0" layoutY="10.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                      </children>
                   </HBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Score:" />
-                        <Label layoutX="10.0" layoutY="10.0" text="Y:" />
+                        <Label layoutX="10.0" layoutY="10.0" text="Yellow:" />
                         <TextField fx:id="tYScore" layoutX="42.0" layoutY="10.0" maxWidth="30.0" />
-                        <Label layoutX="132.0" layoutY="10.0" text="B:" />
+                        <Label layoutX="132.0" layoutY="10.0" text="Blue:" />
                         <TextField fx:id="tBScore" maxWidth="30.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                      </children>
                   </HBox>

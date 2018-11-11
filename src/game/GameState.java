@@ -29,6 +29,7 @@ public class GameState implements Runnable {
 	private long matchLength;
 	private int elapsed;
 	private int generation;
+	private int tGenerations;
 
 	public GameState(long matchLength) {
 		this.setMatchLength(matchLength);
@@ -36,6 +37,7 @@ public class GameState implements Runnable {
 		yScore = 0;
 		bScore = 0;
 		generation = 0;
+		tGenerations = 0;
 		players = new ArrayList<Player>();
 		bTeam = new ArrayList<Player>();
 		yTeam = new ArrayList<Player>();
@@ -71,7 +73,9 @@ public class GameState implements Runnable {
 					reset(true);
 					return;
 				}
+				//Advance to next generation;
 				generation = Selector.getCurrentGen();
+				tGenerations = Selector.getTotalGen();
 				reset(false);
 			} catch (GAException e) {
 				e.printStackTrace();
@@ -110,13 +114,13 @@ public class GameState implements Runnable {
 
 			if (p.getTimeWindow() == 0) {
 				if (Physics2D.distance(p.getPos().getX(), p.getPos().getY(), p.getPrevPos().getX(),
-						p.getPrevPos().getY()) < 20) {
+						p.getPrevPos().getY()) < 1) {
 					penalize(p, 50);
 				}
 				p.setTimeWindow(3);
 			} else {
 				if (Physics2D.distance(p.getPos().getX(), p.getPos().getY(), p.getPrevPos().getX(),
-						p.getPrevPos().getY()) < 20) {
+						p.getPrevPos().getY()) < 1) {
 					p.setTimeWindow(p.getTimeWindow() - 1);
 				} else {
 					p.setPrevPos(p.getPos());
@@ -149,7 +153,8 @@ public class GameState implements Runnable {
 		}
 		bTeamAvg = totalScore / 10;
 
-		SimulationController.updateGeneration(generation + "", yTeamAvg, bTeamAvg);
+		FileOutputHandler.updateAvgFitness((int) yTeamAvg, (int) bTeamAvg);
+		SimulationController.updateGeneration(tGenerations + "", generation + "", yTeamAvg, bTeamAvg);
 	}
 
 	private void updateScore(Team team) {
@@ -321,21 +326,22 @@ public class GameState implements Runnable {
 
 		// The player is running with the ball.
 		if (isInPoss(p)) {
-			//penalizeOpponents(p, 2);
+			// penalizeOpponents(p, 2);
 			reward(p, 1000);
 			makeDefaultKick(p);
 		}
 		updatePState(p, a);// The player is simply moving.
 
 		// Penalize collisions.
-		/*if (Physics2D.isInCollision(p, players)) {
-			penalize(p, 10);
-		}*/
+		if (Physics2D.isInCollision(p, players)) {
+			penalize(p, 50);
+		}
 
 		// Penalize the player if it moves outside of the field.
-		/*if (!p.isInField()) {
+
+		if (!p.isInField()) {
 			penalize(p, 50);
-		}*/
+		}
 
 		/*
 		 * If the ball is currently in the black team's half, reward the yellow team.
@@ -355,12 +361,10 @@ public class GameState implements Runnable {
 
 	}
 
-	private void penalizeOpponents(Player p, int penalty) {
-		for (Player p1 : players) {
-			if (p.getTeam() != p1.getTeam())
-				penalize(p1, penalty);
-		}
-	}
+	/*
+	 * private void penalizeOpponents(Player p, int penalty) { for (Player p1 :
+	 * players) { if (p.getTeam() != p1.getTeam()) penalize(p1, penalty); } }
+	 */
 
 	private void penalize(Player p, int penalty) {
 		p.setScore(p.getScore() - penalty);
@@ -400,13 +404,12 @@ public class GameState implements Runnable {
 			p.move(c, players);
 			break;
 		case MOVE_SW:
-			c = new Coordinate(p.getPos().getX() - moveDistance, p.getPos().getY() - moveDistance);
+			c = new Coordinate(p.getPos().getX() - moveDistance, p.getPos().getY() + moveDistance);
 			p.setDirection(Direction.SW);
 			p.move(c, players);
 			break;
 		case MOVE_NE:
 			c = new Coordinate(p.getPos().getX() + moveDistance, p.getPos().getY() - moveDistance);
-
 			p.setDirection(Direction.NE);
 			p.move(c, players);
 			break;
@@ -422,6 +425,8 @@ public class GameState implements Runnable {
 		switch (state) {
 		case IN_POSS:
 			return isInPoss(p);
+		case TM_IN_POSS:
+			return isTMInPoss(p);
 		case BALL_N:
 			return isBallNorth(p);
 		case BALL_S:
@@ -577,6 +582,21 @@ public class GameState implements Runnable {
 		return b;
 	}
 
+	private boolean isTMInPoss(Player p) {
+		if (p.getTeam() == Team.BLACK) {
+			for (Player p1 : bTeam) {
+				if (isInPoss(p1))
+					return true;
+			}
+		} else {
+			for (Player p1 : yTeam) {
+				if (isInPoss(p1))
+					return true;
+			}
+		}
+		return false;
+	}
+
 	private boolean isOPGClose(Player p) {
 		if (p.getTeam() == Team.BLACK) {
 			double d = Physics2D.distance(p.getPos().getX(), p.getPos().getY(), Physics2D.X1_GOAL, Physics2D.Y1_GOAL);
@@ -614,7 +634,7 @@ public class GameState implements Runnable {
 		for (Player p : players) {
 			p.setPos(p.getStartPos());
 			p.setDirection(randDir());
-			//p.getModel().genDebugCode(p.getId() + "_");
+			// p.getModel().genDebugCode(p.getId() + "_");
 		}
 
 		if (fullReset) {
@@ -670,7 +690,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			//model.genDebugCode(model.getpId() + "");
+			// model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			yTeam.add(p);
@@ -689,7 +709,7 @@ public class GameState implements Runnable {
 			model.setpPos(pos);
 
 			model.setpTeam(p.getTeam());
-			//model.genDebugCode(model.getpId() + "");
+			// model.genDebugCode(model.getpId() + "");
 			p.setModel(model);
 
 			bTeam.add(p);
@@ -855,13 +875,4 @@ public class GameState implements Runnable {
 	public void setMatchLength(long matchLength) {
 		this.matchLength = matchLength;
 	}
-
-	public int getGeneration() {
-		return generation;
-	}
-
-	public void setGeneration(int generation) {
-		this.generation = generation;
-	}
-
 }

@@ -38,8 +38,13 @@ public class DTree implements Serializable {
 	}
 
 	public void initialize() {
-		root = randInt(null); // The root is an internal node without a parent.
-		grow(root, 0);
+		try {
+			root = randInt(null); // The root is an internal node without a parent.
+			grow(root, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void grow(Node node, int currentDepth) {
@@ -64,7 +69,7 @@ public class DTree implements Serializable {
 		grow(node.getRightChild(), currentDepth + 1);
 	}
 
-	public static Node randInt(Node parent) {
+	public static Node randInt(Node parent) throws Exception {
 		return new Node(parent, null, null, randState(), null);
 	}
 
@@ -84,11 +89,11 @@ public class DTree implements Serializable {
 		yes.setParent(node);
 	}
 
-	public static Node randLeaf(Node parent) {
+	public static Node randLeaf(Node parent) throws Exception {
 		return new Node(parent, null, null, null, randMove());
 	}
 
-	public static Action randMove() {
+	public static Action randMove() throws Exception {
 		int roll = new Random().nextInt(8);
 		switch (roll) {
 		case 0:
@@ -126,11 +131,12 @@ public class DTree implements Serializable {
 		case 16:
 			return Action.MOVE_TO_POSS;*/
 		}
-		return null;
+
+		throw new Exception("Invalid move provided.");
 	}
 
-	public static State randState() {
-		int roll = new Random().nextInt(19);
+	public static State randState() throws Exception {
+		int roll = new Random().nextInt(20);
 		switch (roll) {
 		case 0:
 			return State.BALL_N;
@@ -170,8 +176,11 @@ public class DTree implements Serializable {
 			return State.OPPONENT_E;
 		case 18:
 			return State.IN_POSS;
+		case 19:
+			return State.TM_IN_POSS;
 		}
-		return null;
+		
+		throw new Exception("Invalid State provided.");
 	}
 
 	public Node root() {

@@ -55,8 +55,8 @@ public class SimulationController extends Controller {
 	// The statitc fields are used to control the static fxml variables in a static
 	// way.
 	@FXML
-	private TextField tYScore, tBScore, tGen, tMaxNumGen;
-	private static TextField s_tYScore, s_tBScore, s_tGen;
+	private TextField tYScore, tBScore, tGen, tMaxNumGen, tTotalGen;
+	private static TextField s_tYScore, s_tBScore, s_tGen, s_tTotalGen;
 
 	@FXML
 	private LineChart<String, Double> chart;
@@ -153,6 +153,7 @@ public class SimulationController extends Controller {
 		tYScore.setText(0 + "");
 		tBScore.setText(0 + "");
 		tGen.setText(0 + "");
+		tTotalGen.setText(0 + "");
 		tMaxNumGen.setText(200 + "");
 
 		// --Make the static variables point to the same place as the original ones.--//
@@ -160,6 +161,7 @@ public class SimulationController extends Controller {
 		s_tBScore = tBScore;
 		s_tGen = tGen;
 		s_chart = chart;
+		s_tTotalGen = tTotalGen;
 
 		// -- Create two series for the yellow and black team. --//
 		XYChart.Series<String, Double> ySeries = new Series<String, Double>();
@@ -192,7 +194,7 @@ public class SimulationController extends Controller {
 		});
 	}
 
-	public static void updateGeneration(String generation, double yTeamAvgFitness, double bTeamAvgFitness) {
+	public static void updateGeneration(String tGenerations, String generation, double yTeamAvgFitness, double bTeamAvgFitness) {
 		XYChart.Data<String, Double> yData = new Data<String, Double>(generation, yTeamAvgFitness);
 		XYChart.Data<String, Double> bData = new Data<String, Double>(generation, bTeamAvgFitness);
 
@@ -200,7 +202,8 @@ public class SimulationController extends Controller {
 		ObservableList<XYChart.Data<String, Double>> bDataPoints = s_chart.getData().get(1).getData();
 
 		Platform.runLater(() -> {
-			s_tGen.setText(generation + "");
+			s_tGen.setText(generation);
+			s_tTotalGen.setText(tGenerations);
 			s_chart.getData().get(0).getData().add(yData);
 			s_chart.getData().get(1).getData().add(bData);
 
@@ -212,21 +215,4 @@ public class SimulationController extends Controller {
 				bDataPoints.remove(0);
 		});
 	}
-
-	private void loadFXML(String path) {
-		try {
-			Parent parent = FXMLLoader.load(getClass().getResource(path));
-			Stage s = (Stage) rootPane.getScene().getWindow();
-			s.setScene(new Scene(parent));
-			s.setTitle("StratFinder");
-			s.setOnCloseRequest(e -> {
-				e.consume(); // Consume the event so we can handle it manually.
-				Controller.closeWindow(s, true);
-			});
-			s.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

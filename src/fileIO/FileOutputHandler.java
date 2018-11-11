@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,6 +40,32 @@ public class FileOutputHandler {
 			out.print(debugCode);
 			out.flush();
 			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void updateAvgFitness(int yFitness, int bFitness) {
+		//Round off values to two decimal places.
+		
+		File yFile = new File("data/average-fitness/yTeam.csv");
+		File bFile = new File("data/average-fitness/bTeam.csv");
+		
+		PrintWriter yOut;
+		PrintWriter bOut;
+		try {
+			//Open the files in append mode.
+			yOut = new PrintWriter(new FileOutputStream(yFile, true));
+			bOut = new PrintWriter(new FileOutputStream(bFile, true));
+			
+			yOut.println(yFitness);
+			bOut.println(bFitness);
+			
+			yOut.flush();
+			bOut.flush();
+			
+			yOut.close();
+			bOut.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
