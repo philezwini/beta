@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -66,6 +64,23 @@ public class FileOutputHandler {
 			
 			yOut.close();
 			bOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void recRunningTimes(long[] runTimes) {
+		File file = new File("data/running-times/rt.csv");
+		PrintWriter out;
+		
+		try {
+			out = new PrintWriter(new FileOutputStream(file, true));
+			//Print all the running times to the csv files, each running time in a new line.
+			for(int i = 0; i < runTimes.length; i++) {
+				out.println(runTimes[i]);
+				out.flush();
+			}
+			out.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

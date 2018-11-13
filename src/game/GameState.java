@@ -30,6 +30,7 @@ public class GameState implements Runnable {
 	private int elapsed;
 	private int generation;
 	private int tGenerations;
+	private long[] runTimes;
 
 	public GameState(long matchLength) {
 		this.setMatchLength(matchLength);
@@ -38,6 +39,8 @@ public class GameState implements Runnable {
 		bScore = 0;
 		generation = 0;
 		tGenerations = 0;
+		
+		runTimes = new long[200];
 		players = new ArrayList<Player>();
 		bTeam = new ArrayList<Player>();
 		yTeam = new ArrayList<Player>();
@@ -66,6 +69,7 @@ public class GameState implements Runnable {
 			try {
 				elapsed = 0;
 				updateStats();
+				long start = System.nanoTime();
 				if (!Selector.monitor(yTeam, bTeam)) {
 					System.out.println("Done.");// We have reached our stopping condition. We have to stop evolution.
 					// Instruct the ExecutorService to shutdown after this thread completes.
@@ -73,6 +77,10 @@ public class GameState implements Runnable {
 					reset(true);
 					return;
 				}
+				long finish = System.nanoTime();
+				long runningTime = finish - start;
+				runTimes[generation] = runningTime; //Record running time for this generation.
+				
 				//Advance to next generation;
 				generation = Selector.getCurrentGen();
 				tGenerations = Selector.getTotalGen();
@@ -106,8 +114,8 @@ public class GameState implements Runnable {
 		// -- Reward passes. --//
 		if ((ball.getPrevKicker() != null) && (!ball.getPrevKicker().equals(ball.getKicker()))
 				&& (ball.getPrevKicker().getTeam() == ball.getKicker().getTeam())) {
-			reward(ball.getPrevKicker(), 10);
-			reward(ball.getKicker(), 10);
+			reward(ball.getPrevKicker(), 1000);
+			reward(ball.getKicker(), 1000);
 		}
 
 		for (Player p : players) {
@@ -165,7 +173,7 @@ public class GameState implements Runnable {
 			if (scorer.getTeam() == Team.YELLOW)
 				penalize(scorer, 10000);
 			else
-				reward(scorer, 10000);
+				reward(scorer, 100000);
 
 			for (Player p : players) {
 				if (!p.equals(scorer)) {
@@ -181,7 +189,7 @@ public class GameState implements Runnable {
 			if (scorer.getTeam() == Team.BLACK)
 				penalize(scorer, 10000);
 			else
-				reward(scorer, 10000);
+				reward(scorer, 100000);
 
 			for (Player p : players) {
 				if (!p.equals(scorer)) {
@@ -319,15 +327,15 @@ public class GameState implements Runnable {
 		if (d < 20)
 			reward(p, 10);
 		if ((d > 20) && (d <= 50))
-			reward(p, 5);
+			reward(p, 50);
 
 		if ((d > 50) && (d <= 100))
-			reward(p, 1);
+			reward(p, 25);
 
 		// The player is running with the ball.
 		if (isInPoss(p)) {
 			// penalizeOpponents(p, 2);
-			reward(p, 1000);
+			reward(p, 50000);
 			makeDefaultKick(p);
 		}
 		updatePState(p, a);// The player is simply moving.
@@ -340,7 +348,7 @@ public class GameState implements Runnable {
 		// Penalize the player if it moves outside of the field.
 
 		if (!p.isInField()) {
-			penalize(p, 50);
+			penalize(p, 500);
 		}
 
 		/*
@@ -638,6 +646,8 @@ public class GameState implements Runnable {
 		}
 
 		if (fullReset) {
+			//FileOutputHandler.recRunningTimes(runTimes);
+			runTimes = new long[200];
 			generation = 0;
 			yScore = 0;
 			bScore = 0;
@@ -684,7 +694,7 @@ public class GameState implements Runnable {
 			Player p = new Player("img/players/yellow.png", Team.YELLOW, id++, c, pos);
 			p.setDirection(randDir());
 
-			DTree model = new DTree(6);
+			DTree model = new DTree(10);
 			model.setpId(p.getId());
 			model.setPStartPos(p.getStartPos());
 			model.setpPos(pos);
@@ -703,7 +713,7 @@ public class GameState implements Runnable {
 			Player p = new Player("img/players/black.png", Team.BLACK, id++, c, pos);
 			p.setDirection(randDir());
 
-			DTree model = new DTree(6);
+			DTree model = new DTree(10);
 			model.setpId(p.getId());
 			model.setPStartPos(p.getStartPos());
 			model.setpPos(pos);
