@@ -10,7 +10,7 @@ import model.Node;
 
 public class Selector {
 	private static final int TEAM_SIZE = 10; // The allowed size for each team.
-	// private static final double MUT_STEP_SIZE = 0.01; // Mutation step size.
+	private static final double MUT_STEP_SIZE = 0.0001; // Mutation step size.
 
 	private static int maxNumGen;
 
@@ -122,33 +122,43 @@ public class Selector {
 
 	private static ArrayList<DTree> reproduce(ArrayList<Player> parents) {
 		ArrayList<DTree> offSpring = new ArrayList<>();
-		// boolean newOverallBest = false; // If we have a new overall best we need to
-		// increase the mutation rate.
+		boolean newOverallBest = false; // If we have a new overall best we need to increase the mutation rate.
 
 		// --The following calculation ensures that the resulting offspring, when added
 		// to the number of parents, will always sum up to TEAM_SIZE. --//
 		int numOffspring = TEAM_SIZE - parents.size();
 		int l = parents.size();
 
-		/*
-		 * for (Player p : parents) { if (p.getScore() > overallBest) {
-		 * System.out.println("new overall best found."); newOverallBest = true;
-		 * overallBest = p.getScore(); // Update the overall best fitness. } }
-		 * 
-		 * if (newOverallBest) { if (mutationRate < 1) { mutationRate += MUT_STEP_SIZE;
-		 * // Increase the mutation rate because we are still exploring the search //
-		 * space. System.out.println("New increased mutation rate: " + mutationRate); }
-		 * 
-		 * if (mutationRate > 1) { mutationRate = 1; }
-		 * 
-		 * } else { if (mutationRate > 0) { mutationRate -= MUT_STEP_SIZE;// Decrease
-		 * the mutation rate because we are converging.
-		 * System.out.println("New decreased mutation rate: " + mutationRate);
-		 * 
-		 * }
-		 * 
-		 * if (mutationRate < 0) { mutationRate = 0; } }
-		 */
+		for (Player p : parents) {
+			if (p.getScore() > overallBest) {
+				System.out.println("new overall best found.");
+				newOverallBest = true;
+				overallBest = p.getScore(); // Update the overall best fitness.
+			}
+		}
+
+		if (newOverallBest) {
+			if (mutationRate < 1) {
+				mutationRate += MUT_STEP_SIZE;
+				// Increase the mutation rate because we are still exploring the search space.
+			}
+
+			//Esuring the mutation rate does not exceed 1.
+			if (mutationRate > 1) {
+				mutationRate = 1;
+			}
+
+		} else {
+			if (mutationRate > 0) {
+				mutationRate -= MUT_STEP_SIZE;// Decrease the mutation rate because we are converging.
+
+			}
+
+			//Ensuring the mutation rate does not go below 0.
+			if (mutationRate < 0) {
+				mutationRate = 0;
+			}
+		}
 
 		for (int i = 0; i < numOffspring; i++) {
 			Player parent1 = parents.get(i % l);
@@ -308,7 +318,7 @@ public class Selector {
 	public static int getCurrentGen() {
 		return currentGen;
 	}
-	
+
 	public static int getTotalGen() {
 		return tGenerations;
 	}
